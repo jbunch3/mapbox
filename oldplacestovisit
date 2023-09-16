@@ -1,0 +1,677 @@
+<!-- <link href='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.css' rel='stylesheet' /> -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+<link href="https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css"
+    rel="stylesheet" />
+
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" crossorigin=""></script>
+<script src="https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js"
+    crossorigin="anonymous"></script>
+<script type="text/javascript" src="L.TileLayer.NoGap.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Clamp.js/0.5.1/clamp.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js"></script>
+
+<style>
+    .map {
+        /* 		margin: 256px; */
+        width: auto;
+        /* style: "maxWidth:100%";  */
+        height: 800px;
+    }
+
+    @media only screen and (max-width: 700px) {
+        .map {
+            width: auto;
+            height: 400px;
+        }
+    }
+
+    .my-leaflet-map-container img {
+        max-height: none;
+    }
+
+    .leaflet-container.leaflet-touch-drag.leaflet-touch-zoom {
+        -ms-touch-action: none;
+        touch-action: none;
+    }
+
+    .leaflet-container.leaflet-touch-drag {
+        -ms-touch-action: pinch-zoom;
+        touch-action: none;
+        touch-action: pinch-zoom;
+    }
+
+    .leaflet-container.leaflet-touch-zoom {
+        -ms-touch-action: pan-x pan-y;
+        touch-action: pan-x pan-y;
+    }
+
+    .leaflet-grab {
+        cursor: -webkit-grab;
+        cursor: -moz-grab;
+        cursor: grab;
+    }
+
+    .leaflet-container {
+        box-sizing: content-box;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .leaflet-container {
+        overflow: hidden;
+    }
+
+    .leaflet-pane {
+        position: absolute;
+    }
+</style>
+
+<div id="map" class="map"></div>
+
+<script>
+  (function () {
+    var originalInitTile = L.GridLayer.prototype._initTile;
+    L.GridLayer.include({
+      _initTile: function (tile) {
+        originalInitTile.call(this, tile);
+
+        var tileSize = this.getTileSize();
+
+        tile.style.width = tileSize.x + 1 + 'px';
+        tile.style.height = tileSize.y + 1 + 'px';
+      }
+    });
+  })();
+
+  // Mobile View
+  if (window.innerWidth <= 991) {
+    var mobileMapLayer = 'mapbox://styles/jcbunch3/ckzslpgtb004r14jy3o072ba0';
+    const bounds = [
+      [43, -12],
+      [61, 36]
+    ];
+    L.mapbox.accessToken =
+      'pk.eyJ1IjoiamNidW5jaDMiLCJhIjoiY2t6NzM0em9uMGlvbzMwbWdkbmR5N2loaCJ9.eKquRAbhpJDDshFFKtd9Yw';
+
+    var map = L.mapbox
+      .map('map', null, {
+        zoomSnap: 0,
+        zoomDelta: 0.5
+      })
+      .setView([52.6, 8.8], 5);
+
+    var currentLocation = window.location.href;
+    if (currentLocation.indexOf('holstein') > -1) {
+      map.setView([53.7, 10], 8.5);
+      map.invalidateSize();
+      $('.map').css('height', '600px');
+    }
+    if (currentLocation.indexOf('mecklenburg') > -1) {
+      map.setView([53.5, 12.3], 8.5);
+      map.invalidateSize();
+      $('.map').css('height', '600px');
+    }
+    if (currentLocation.indexOf('schleswig') > -1) {
+      map.setView([54.6, 9.2], 8.5);
+      map.invalidateSize();
+      $('.map').css('height', '600px');
+    }
+    if (currentLocation.indexOf('vorpommern') > -1) {
+      map.setView([53.6, 13.6], 8.5);
+      map.invalidateSize();
+      $('.map').css('height', '600px');
+    }
+
+    if (currentLocation.indexOf('scania') > -1) {
+      map.setView([55.8, 14], 8);
+      $('.map').css('height', '600px');
+    }
+    if (currentLocation.indexOf('sjaelland') > -1) {
+      map.setView([55.2, 11.9], 8);
+      $('.map').css('height', '600px');
+    }
+    if (currentLocation.indexOf('fyn') > -1) {
+      map.setView([55, 10.3], 8.5);
+      $('.map').css('height', '600px');
+    }
+    if (currentLocation.indexOf('jylland') > -1) {
+      map.setView([56.5, 9.5], 8);
+      $('.map').css('height', '600px');
+    }
+
+    if (currentLocation.indexOf('uckermark') > -1) {
+      map.setView([53.1, 13.8], 9.5);
+      $('.map').css('height', '600px');
+    }
+    if (currentLocation.indexOf('mittelmark') > -1) {
+      map.setView([52.3, 13.2], 8);
+      $('.map').css('height', '600px');
+    }
+
+    if (currentLocation.indexOf('altmark') > -1) {
+      map.setView([52.7, 11.7], 9);
+      $('.map').css('height', '600px');
+    }
+
+    if (currentLocation.indexOf('lower-saxony') > -1) {
+      map.setView([52.6, 10.3], 8);
+      $('.map').css('height', '600px');
+    }
+    if (currentLocation.indexOf('anhalt') > -1) {
+      map.setView([51.75, 12.1], 9.5);
+      $('.map').css('height', '600px');
+    }
+    if (currentLocation.indexOf('eastphalia') > -1) {
+      map.setView([51.6, 11.1], 8);
+      $('.map').css('height', '600px');
+    }
+    if (currentLocation.indexOf('thuringia') > -1) {
+      map.setView([50.7, 10.9], 8.5);
+      $('.map').css('height', '700px');
+    }
+    if (currentLocation.indexOf('electoral-saxony') > -1) {
+      map.setView([51, 13.2], 8);
+      $('.map').css('height', '600px');
+    }
+    if (currentLocation.indexOf('lusatia') > -1) {
+      map.setView([51.3, 14.5], 8.5);
+      $('.map').css('height', '600px');
+    }
+
+    if (currentLocation.indexOf('hessen') > -1) {
+      map.setView([50.7, 9.3], 8.5);
+      $('.map').css('height', '600px');
+    }
+    if (currentLocation.indexOf('wetterau') > -1) {
+      map.setView([50, 9], 9);
+      $('.map').css('height', '600px');
+    }
+    if (currentLocation.indexOf('westerwald') > -1) {
+      map.setView([50.2, 8], 9);
+      $('.map').css('height', '600px');
+    }
+
+    if (currentLocation.indexOf('main-franconia') > -1) {
+      map.setView([50.05, 10.1], 9.5);
+      $('.map').css('height', '900px');
+    }
+    if (currentLocation.indexOf('upper-franconia') > -1) {
+      map.setView([50.05, 11.1], 9.5);
+      $('.map').css('height', '800px');
+    }
+    if (currentLocation.indexOf('middle-franconia') > -1) {
+      map.setView([49.1, 10.8], 9);
+      $('.map').css('height', '600px');
+    }
+    if (currentLocation.indexOf('odenwald') > -1) {
+      map.setView([49.67, 9.2], 9);
+      $('.map').css('height', '600px');
+    }
+    if (currentLocation.indexOf('vogtland') > -1) {
+      map.setView([50.3, 12.1], 9);
+      $('.map').css('height', '650px');
+    }
+    if (currentLocation.indexOf('hohenlohe') > -1) {
+      map.setView([49.3, 9.8], 9);
+      $('.map').css('height', '600px');
+    }
+
+
+    if (currentLocation.indexOf('upper-bavaria') > -1) {
+      map.setView([48.1, 11.7], 8.5);
+      $('.map').css('height', '800px');
+    }
+    if (currentLocation.indexOf('lower-bavaria') > -1) {
+      map.setView([48.7, 12.7], 9);
+      $('.map').css('height', '800px');
+    }
+
+    if (currentLocation.indexOf('upper-palatinate') > -1) {
+      map.setView([49.4, 12.15], 9);
+      $('.map').css('height', '800px');
+    }
+
+
+    if (currentLocation.indexOf('allgau') > -1) {
+      map.setView([47.6, 10.3], 9);
+      $('.map').css('height', '600px');
+    }
+    if (currentLocation.indexOf('oberschwaben') > -1) {
+      map.setView([48.2, 9.9], 8.5);
+      $('.map').css('height', '600px');
+    }
+    if (currentLocation.indexOf('wurttemberg') > -1) {
+      map.setView([48.4, 9], 8.5);
+      $('.map').css('height', '600px');
+    }
+    if (currentLocation.indexOf('lake-constance-bodensee') > -1) {
+      map.setView([47.6, 9.2], 10);
+      $('.map').css('height', '600px');
+    }
+
+    if (currentLocation.indexOf('ducal-bar') > -1) {
+      map.setView([49, 5.5], 9);
+      $('.map').css('height', '800px');
+    }
+    if (currentLocation.indexOf('lorraine/lorraine') > -1) {
+      map.setView([48.6, 6.4], 8.5);
+      $('.map').css('height', '800px');
+    }
+    if (currentLocation.indexOf('luxembourg') > -1) {
+      map.setView([49.7, 5.65], 9);
+      $('.map').css('height', '600px');
+    }
+    if (currentLocation.indexOf('saarland') > -1) {
+      map.setView([49.2, 7], 9.5);
+      $('.map').css('height', '600px');
+    }
+
+    if (currentLocation.indexOf('middle-rhine-valley') > -1) {
+      map.setView([50.25, 7.6], 9.5);
+      $('.map').css('height', '700px');
+    }
+    if (currentLocation.indexOf('mosel-valley') > -1) {
+      map.setView([50, 6.9], 9);
+      $('.map').css('height', '700px');
+    }
+    if (currentLocation.indexOf('electoral-palatinate') > -1) {
+      map.setView([49.4, 8.15], 9);
+      $('.map').css('height', '700px');
+    }
+    if (currentLocation.indexOf('alsace') > -1) {
+      map.setView([48.5, 7.5], 9);
+      $('.map').css('height', '1000px');
+    }
+    if (currentLocation.indexOf('baden') > -1) {
+      map.setView([48.5, 8.2], 9);
+      $('.map').css('height', '1000px');
+    }
+
+    if (currentLocation.indexOf('maas-valley') > -1) {
+      map.setView([50.7, 5.5], 8.5);
+      $('.map').css('height', '750px');
+    }
+    if (currentLocation.indexOf('lower-rhine-valley') > -1) {
+      map.setView([51.2, 6.5], 9);
+      $('.map').css('height', '900px');
+    }
+    if (currentLocation.indexOf('bergisches-land') > -1) {
+      map.setView([50.9, 7.3], 9.5);
+      $('.map').css('height', '700px');
+    }
+
+    if (currentLocation.indexOf('weser-engern') > -1) {
+      map.setView([52.78, 8.9], 8.5);
+      $('.map').css('height', '1050px');
+    }
+    if (currentLocation.indexOf('sauerland') > -1) {
+      map.setView([51.1, 8], 9.5);
+      $('.map').css('height', '750px');
+    }
+    if (currentLocation.indexOf('westphalia-2') > -1) {
+      map.setView([52.3, 7.7], 9);
+      $('.map').css('height', '1050px');
+    }
+
+    if (currentLocation.indexOf('frisia') > -1) {
+      map.setView([53.2, 6.5], 8.5);
+      $('.map').css('height', '700px');
+    }
+    if (currentLocation.indexOf('oversticht') > -1) {
+      map.setView([52.6, 6.4], 9);
+      $('.map').css('height', '700px');
+    }
+    if (currentLocation.indexOf('holland') > -1) {
+      map.setView([52.3, 4.4], 9);
+      $('.map').css('height', '800px');
+    }
+    if (currentLocation.indexOf('brabant') > -1) {
+      map.setView([51.2, 5.05], 9);
+      $('.map').css('height', '700px');
+    }
+    if (currentLocation.indexOf('flanders') > -1) {
+      map.setView([50.9, 3.3], 9);
+      $('.map').css('height', '700px');
+    }
+    if (currentLocation.indexOf('hainaut') > -1) {
+      map.setView([50.3, 4], 9);
+      $('.map').css('height', '700px');
+    }
+    if (currentLocation.indexOf('gelderland') > -1) {
+      map.setView([52.1, 5.6], 9);
+      $('.map').css('height', '700px');
+    }
+
+    if (currentLocation.indexOf('florence') > -1) {
+        map.setView([43.7, 11.3], 9);
+        $('.map').css('height', '800px');
+    }
+    if (currentLocation.indexOf('pisa') > -1) {
+        map.setView([43.3, 10.4], 9);
+        $('.map').css('height', '700px');
+    }
+    if (currentLocation.indexOf('lucca') > -1) {
+        map.setView([44, 10.4], 9);
+        $('.map').css('height', '700px');
+    }
+    if (currentLocation.indexOf('carrara') > -1) {
+        map.setView([44.1, 10.1], 10);
+        $('.map').css('height', '700px');
+    }
+    if (currentLocation.indexOf('siena') > -1) {
+        map.setView([43, 11.3], 9);
+        $('.map').css('height', '700px');
+    }
+
+
+    // // Set the map's max bounds.
+    // map.setMaxBounds(bounds);
+
+    L.mapbox
+      .styleLayer(mobileMapLayer, {
+        maxZoom: 22,
+        tileSize: 512,
+        zoomOffset: -1
+      })
+      .addTo(map);
+    map.invalidateSize();
+
+    // Normal View
+  } else {
+    const bounds = [
+      [43, -12],
+      [61, 36]
+    ];
+
+    L.mapbox.accessToken =
+      'pk.eyJ1IjoiamNidW5jaDMiLCJhIjoiY2t6NzM0em9uMGlvbzMwbWdkbmR5N2loaCJ9.eKquRAbhpJDDshFFKtd9Yw';
+
+    var desktopMapLayer = 'mapbox://styles/jcbunch3/ckzslpgtb004r14jy3o072ba0';
+    var currentLocation = window.location.href;
+
+    var map = L.mapbox
+      .map('map', null, {
+        fullscreenControl: true,
+        zoomSnap: 0,
+        zoomDelta: 0.5
+      })
+      .setView([52.6, 8.8], 6);
+    map.invalidateSize();
+
+    if (currentLocation.indexOf('holstein') > -1) {
+      map.setView([53.7, 10], 8.5);
+      map.invalidateSize();
+      $('.map').css('height', '600px');
+    }
+    if (currentLocation.indexOf('mecklenburg') > -1) {
+      map.setView([53.5, 12.3], 8.5);
+      map.invalidateSize();
+      $('.map').css('height', '600px');
+    }
+    if (currentLocation.indexOf('schleswig') > -1) {
+      map.setView([54.6, 9.2], 8.5);
+      map.invalidateSize();
+      $('.map').css('height', '600px');
+    }
+    if (currentLocation.indexOf('vorpommern') > -1) {
+      map.setView([53.6, 13.6], 8.5);
+      map.invalidateSize();
+      $('.map').css('height', '600px');
+    }
+
+    if (currentLocation.indexOf('scania') > -1) {
+      map.setView([55.8, 14], 8);
+      $('.map').css('height', '600px');
+    }
+    if (currentLocation.indexOf('sjaelland') > -1) {
+      map.setView([55.2, 11.9], 8);
+      $('.map').css('height', '600px');
+    }
+    if (currentLocation.indexOf('fyn') > -1) {
+      map.setView([55, 10.3], 8.5);
+      $('.map').css('height', '600px');
+    }
+    if (currentLocation.indexOf('jylland') > -1) {
+      map.setView([56.5, 9.5], 8);
+      $('.map').css('height', '600px');
+    }
+
+    if (currentLocation.indexOf('uckermark') > -1) {
+      map.setView([53.1, 13.8], 9.5);
+      $('.map').css('height', '600px');
+    }
+    if (currentLocation.indexOf('mittelmark') > -1) {
+      map.setView([52.3, 13.2], 8);
+      $('.map').css('height', '600px');
+    }
+
+    if (currentLocation.indexOf('altmark') > -1) {
+      map.setView([52.7, 11.7], 9);
+      $('.map').css('height', '600px');
+    }
+
+    if (currentLocation.indexOf('lower-saxony') > -1) {
+      map.setView([52.6, 10.3], 8);
+      $('.map').css('height', '600px');
+    }
+        if (currentLocation.indexOf('anhalt') > -1) {
+      map.setView([51.75, 12.1], 9.5);
+      $('.map').css('height', '600px');
+    }
+        if (currentLocation.indexOf('eastphalia') > -1) {
+      map.setView([51.6, 11.1], 8);
+      $('.map').css('height', '600px');
+    }
+        if (currentLocation.indexOf('thuringia') > -1) {
+      map.setView([50.7, 10.9], 8.5);
+      $('.map').css('height', '700px');
+    }
+        if (currentLocation.indexOf('electoral-saxony') > -1) {
+      map.setView([51, 13.2], 8);
+      $('.map').css('height', '600px');
+    }
+        if (currentLocation.indexOf('lusatia') > -1) {
+      map.setView([51.3, 14.5], 8.5);
+      $('.map').css('height', '600px');
+    }
+
+    if (currentLocation.indexOf('hessen') > -1) {
+      map.setView([50.7, 9.3], 8.5);
+      $('.map').css('height', '600px');
+    }
+        if (currentLocation.indexOf('wetterau') > -1) {
+      map.setView([50, 9], 9);
+      $('.map').css('height', '600px');
+    }
+        if (currentLocation.indexOf('westerwald') > -1) {
+      map.setView([50.2, 8], 9);
+      $('.map').css('height', '600px');
+    }
+
+    if (currentLocation.indexOf('main-franconia') > -1) {
+      map.setView([50.05, 10.1], 9.5);
+      $('.map').css('height', '900px');
+    }
+    if (currentLocation.indexOf('upper-franconia') > -1) {
+      map.setView([50.05, 11.1], 9.5);
+      $('.map').css('height', '800px');
+    }
+        if (currentLocation.indexOf('middle-franconia') > -1) {
+      map.setView([49.1, 10.8], 9);
+      $('.map').css('height', '600px');
+    }
+        if (currentLocation.indexOf('odenwald') > -1) {
+      map.setView([49.67, 9.2],9);
+      $('.map').css('height', '600px');
+    }
+        if (currentLocation.indexOf('vogtland') > -1) {
+      map.setView([50.3, 12.1], 9);
+      $('.map').css('height', '650px');
+    }
+        if (currentLocation.indexOf('hohenlohe') > -1) {
+      map.setView([49.3, 9.8], 9);
+      $('.map').css('height', '600px');
+    }
+
+
+    if (currentLocation.indexOf('upper-bavaria') > -1) {
+      map.setView([48.1, 11.7], 8.5);
+      $('.map').css('height', '800px');
+    }
+        if (currentLocation.indexOf('lower-bavaria') > -1) {
+      map.setView([48.7, 12.7], 9);
+      $('.map').css('height', '800px');
+    }
+
+    if (currentLocation.indexOf('upper-palatinate') > -1) {
+      map.setView([49.4, 12.15], 9);
+      $('.map').css('height', '800px');
+    }
+
+
+    if (currentLocation.indexOf('allgau') > -1) {
+      map.setView([47.6, 10.3], 9);
+      $('.map').css('height', '600px');
+    }
+        if (currentLocation.indexOf('oberschwaben') > -1) {
+      map.setView([48.2, 9.9], 8.5);
+      $('.map').css('height', '600px');
+    }
+        if (currentLocation.indexOf('wurttemberg') > -1) {
+      map.setView([48.4, 9], 8.5);
+      $('.map').css('height', '600px');
+    }
+        if (currentLocation.indexOf('lake-constance-bodensee') > -1) {
+      map.setView([47.6, 9.2], 10);
+      $('.map').css('height', '600px');
+    }
+
+    if (currentLocation.indexOf('ducal-bar') > -1) {
+      map.setView([49, 5.5], 9);
+      $('.map').css('height', '800px');
+    }
+        if (currentLocation.indexOf('lorraine/lorraine') > -1) {
+      map.setView([48.6, 6.4], 8.5);
+      $('.map').css('height', '800px');
+    }
+        if (currentLocation.indexOf('luxembourg') > -1) {
+      map.setView([49.7, 5.65], 9);
+      $('.map').css('height', '600px');
+    }
+        if (currentLocation.indexOf('saarland') > -1) {
+      map.setView([49.2, 7], 9.5);
+      $('.map').css('height', '600px');
+    }
+
+    if (currentLocation.indexOf('middle-rhine-valley') > -1) {
+      map.setView([50.25, 7.6], 9.5);
+      $('.map').css('height', '700px');
+    }
+        if (currentLocation.indexOf('mosel-valley') > -1) {
+      map.setView([50, 6.9], 9);
+      $('.map').css('height', '700px');
+    }
+        if (currentLocation.indexOf('electoral-palatinate') > -1) {
+      map.setView([49.4, 8.15], 9);
+      $('.map').css('height', '700px');
+    }
+        if (currentLocation.indexOf('alsace') > -1) {
+      map.setView([48.5, 7.5], 9);
+      $('.map').css('height', '1000px');
+    }
+        if (currentLocation.indexOf('baden') > -1) {
+      map.setView([48.5, 8.2], 9);
+      $('.map').css('height', '1000px');
+    }
+
+    if (currentLocation.indexOf('maas-valley') > -1) {
+      map.setView([50.7, 5.5], 8.5);
+      $('.map').css('height', '750px');
+    }
+        if (currentLocation.indexOf('lower-rhine-valley') > -1) {
+      map.setView([51.2, 6.5], 9);
+      $('.map').css('height', '900px');
+    }
+        if (currentLocation.indexOf('bergisches-land') > -1) {
+      map.setView([50.9, 7.3], 9.5);
+      $('.map').css('height', '700px');
+    }
+
+    if (currentLocation.indexOf('weser-engern') > -1) {
+      map.setView([52.78, 8.9], 8.5);
+      $('.map').css('height', '1050px');
+    }
+        if (currentLocation.indexOf('sauerland') > -1) {
+      map.setView([51.1, 8], 9.5);
+      $('.map').css('height', '750px');
+    }
+        if (currentLocation.indexOf('westphalia-2') > -1) {
+      map.setView([52.3, 7.7], 9);
+      $('.map').css('height', '1050px');
+    }
+
+    if (currentLocation.indexOf('frisia') > -1) {
+      map.setView([53.2, 6.5], 8.5);
+      $('.map').css('height', '700px');
+    }
+        if (currentLocation.indexOf('oversticht') > -1) {
+      map.setView([52.6, 6.4], 9);
+      $('.map').css('height', '700px');
+    }
+        if (currentLocation.indexOf('holland') > -1) {
+      map.setView([52.3, 4.4], 9);
+      $('.map').css('height', '800px');
+    }
+        if (currentLocation.indexOf('brabant') > -1) {
+      map.setView([51.2, 5.05], 9);
+      $('.map').css('height', '700px');
+    }
+        if (currentLocation.indexOf('flanders') > -1) {
+      map.setView([50.9, 3.3], 9);
+      $('.map').css('height', '700px');
+    }
+        if (currentLocation.indexOf('hainaut') > -1) {
+      map.setView([50.3, 4], 9);
+      $('.map').css('height', '700px');
+    }
+        if (currentLocation.indexOf('gelderland') > -1) {
+      map.setView([52.1, 5.6], 9);
+      $('.map').css('height', '700px');
+    }
+
+    if (currentLocation.indexOf('florence') > -1) {
+        map.setView([43.7, 11.3], 9);
+        $('.map').css('height', '800px');
+    }
+    if (currentLocation.indexOf('pisa') > -1) {
+        map.setView([43.1, 10.4], 9);
+        $('.map').css('height', '700px');
+    }
+    if (currentLocation.indexOf('lucca') > -1) {
+        map.setView([44, 10.4], 10);
+        $('.map').css('height', '700px');
+    }
+    if (currentLocation.indexOf('carrara') > -1) {
+        map.setView([44, 10.1], 11);
+        $('.map').css('height', '700px');
+    }
+    if (currentLocation.indexOf('siena') > -1) {
+        map.setView([42.8, 11.3], 9);
+        $('.map').css('height', '700px');
+    }
+
+    // map.setMaxBounds(bounds);
+
+    L.mapbox
+      .styleLayer(desktopMapLayer, {
+        maxZoom: 22,
+        tileSize: 512,
+        zoomOffset: -1
+      })
+      .addTo(map);
+
+    // Set the map's max bounds.
+  }
+</script>
